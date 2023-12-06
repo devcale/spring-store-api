@@ -19,21 +19,29 @@ public class UserDAO implements IUserDAO{
     public List<User> getAll() {
        Session currentSession = entityManager.unwrap(Session.class);
        Query<User> query = currentSession.createQuery("FROM User", User.class);
-       List<User> list = query.getResultList();
-       return list;
+       return query.getResultList();
     }
 
     public User getById(int id) {
-        return null;
+        Session currentSession = entityManager.unwrap(Session.class);
+        return currentSession.get(User.class, id);
     }
 
     @Override
     public void save(User user) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        currentSession.persist(user);
+    }
 
+    public User update(User user) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        return currentSession.merge(user);
     }
 
     @Override
     public void delete(int id) {
-
+        Session currentSession = entityManager.unwrap(Session.class);
+        User user = currentSession.get(User.class, id);
+        currentSession.remove(user);
     }
 }

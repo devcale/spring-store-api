@@ -8,9 +8,11 @@ import java.util.Optional;
 public interface IUserService {
     List<User> getAll();
 
-    Optional<User> getById(int id);
+    User getById(int id);
 
-    void save(User user);
+    void create(User user);
+
+    User update(User user);
 
     void delete(int id);
 }

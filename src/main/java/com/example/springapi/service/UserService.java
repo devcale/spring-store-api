@@ -19,10 +19,8 @@ public class UserService implements IUserService{
 
 
     @Transactional
-    public Optional<User> getById(int id) {
-        Optional toReturn = Optional.empty();
-
-        return toReturn;
+    public User getById(int id) {
+        return userDAO.getById(id);
     }
 
     @Transactional
@@ -30,15 +28,20 @@ public class UserService implements IUserService{
         return userDAO.getAll();
     }
 
-    @Transactional
-    @Override
-    public void save(User user) {
 
+    @Transactional
+    public void create(User user) {
+        userDAO.save(user);
+    }
+
+    @Transactional
+    public User update(User user) {
+        return userDAO.update(user);
     }
 
     @Transactional
     @Override
     public void delete(int id) {
-
+        userDAO.delete(id);
     }
 }

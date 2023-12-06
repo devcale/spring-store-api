@@ -20,10 +20,10 @@ public class UserController {
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id)
     {
-        Optional user =  userService.getById(id);
-        if(user.isPresent())
+        User user =  userService.getById(id);
+        if(user != null)
         {
-            return ResponseEntity.ok((User) user.get());
+            return ResponseEntity.ok((User) user);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -32,5 +32,44 @@ public class UserController {
     public ResponseEntity<List<User>> getUsers()
     {
         return ResponseEntity.ok(userService.getAll());
+    }
+
+    @PostMapping("/user")
+    public ResponseEntity<String> createUser(@RequestBody User userObj)
+    {
+        try{
+            userService.create(userObj);
+            return new ResponseEntity<>("User created:" + userObj, HttpStatus.CREATED);
+        } catch (Exception e)
+        {
+            return new ResponseEntity<>("An error occurred when creating the User:" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<String> updateUser(@RequestBody User userObj)
+    {
+        try{
+            User updatedUser = userService.update(userObj);
+            return new ResponseEntity<>("User updated:" + updatedUser, HttpStatus.OK);
+        } catch (Exception e)
+        {
+            return new ResponseEntity<>("An error occurred when creating the User:" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id)
+    {
+        try{
+            userService.delete(id);
+            return new ResponseEntity<>("User of id "+id+" successfully deleted.", HttpStatus.NO_CONTENT);
+        } catch (Exception e)
+        {
+            return new ResponseEntity<>("An error occurred when deleting the User:" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
