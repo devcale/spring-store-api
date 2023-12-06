@@ -1,14 +1,15 @@
 package com.example.springapi.service;
 
 import com.example.springapi.api.model.User;
+import com.example.springapi.dto.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
-    List<User> getAll();
+    List<UserDTO> getAll();
 
-    User getById(int id);
+    UserDTO getById(int id);
 
     void create(User user);
 

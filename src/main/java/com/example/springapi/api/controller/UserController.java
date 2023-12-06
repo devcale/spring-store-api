@@ -1,6 +1,7 @@
 package com.example.springapi.api.controller;
 
 import com.example.springapi.api.model.User;
+import com.example.springapi.dto.UserDTO;
 import com.example.springapi.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,18 +19,18 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer id)
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id)
     {
-        User user =  userService.getById(id);
+        UserDTO user =  userService.getById(id);
         if(user != null)
         {
-            return ResponseEntity.ok((User) user);
+            return ResponseEntity.ok((UserDTO) user);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<User>> getUsers()
+    public ResponseEntity<List<UserDTO>> getUsers()
     {
         return ResponseEntity.ok(userService.getAll());
     }

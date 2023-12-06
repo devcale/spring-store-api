@@ -1,7 +1,9 @@
 package com.example.springapi.service;
 
 import com.example.springapi.api.model.User;
+import com.example.springapi.dto.UserDTO;
 import com.example.springapi.repository.UserDAO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,16 +21,36 @@ public class UserService implements IUserService{
     @Autowired
     private UserDAO userDAO;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Transactional
-    public User getById(int id) {
-        return userDAO.getById(id);
+    public UserDTO getById(int id) {
+        User user = userDAO.getById(id);
+        if(user == null)
+        {
+            return  null;
+        }
+
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        return userDTO;
     }
 
     @Transactional
-    public List<User> getAll() {
-        return userDAO.getAll();
+    public List<UserDTO> getAll() {
+
+        List<User> users = userDAO.getAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
+
+        for(User user : users)
+        {
+            UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+            userDTOs.add(userDTO);
+        }
+
+        return userDTOs;
+
     }
 
 
